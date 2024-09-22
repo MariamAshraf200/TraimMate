@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "6169874421",
+    "project_id": "interncellula",
+    "storage_bucket": "interncellula.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:6169874421:android:f912f7df2835dce82e1abc",
+        "android_client_info": {
+          "package_name": "com.example.check_weather"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtU9s6wyIoc8MvcPZiRm7p4IiymUTdMeE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
