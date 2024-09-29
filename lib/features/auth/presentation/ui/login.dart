@@ -1,16 +1,16 @@
-import 'package:check_weather/features/user/presentation/page/home.dart';
-import 'package:check_weather/features/user/presentation/page/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../widget/widget.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
+import '../widget/widget.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class LoginPage extends StatelessWidget {
+  // Controllers for text fields
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  // Constants
+  // Constants for styling
   static const List<Color> _colors = [
     Color(0xff1c4257),
     Color(0xff253340),
@@ -18,47 +18,36 @@ class LoginScreen extends StatelessWidget {
   static const String _loginTitle = 'LOGIN';
   static const String _loginSubtitle = 'Enter To Your account';
 
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
   final ButtonWidget buttonWidget = ButtonWidget();
+
+  LoginPage({super.key});  // Assuming it's defined
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
-        listener: _authListener,
-        child: _buildBody(context),
+        listener: (context, state) {
+          if (state is AuthSuccess) {
+            // Navigate to Home page upon successful login
+            Navigator.pushReplacementNamed(context, '/home');
+          } else if (state is AuthFailure) {
+            // Show error message on failure
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message)),
+            );
+          }
+        },
+        child: Stack(
+          children: [
+            _buildBackground(), // Background with gradient
+            _buildLoginForm(context),  // Main login form with email, password, and buttons
+          ],
+        ),
       ),
     );
   }
 
-  void _authListener(BuildContext context, AuthState state) {
-    if (state is SucessLoginstate) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => home()),
-      );
-    } else if (state is FailureLoginstate) {
-      _showErrorMessage(context, state.message);
-    }
-  }
-
-  void _showErrorMessage(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
-  }
-
-  Widget _buildBody(BuildContext context) {
-    return Stack(
-      children: [
-        _buildBackground(),
-        _buildLoginForm(context),
-      ],
-    );
-  }
-
+  // Gradient background
   Widget _buildBackground() {
     return Container(
       height: double.infinity,
@@ -73,35 +62,37 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
+  // Login form layout
   Widget _buildLoginForm(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildTitle(),
-          _buildSubtitle(),
+          _buildTitle(),  // Title (LOGIN)
+          _buildSubtitle(),  // Subtitle (Enter To Your account)
           buttonWidget.textFieldButton(
             _emailController,
             'Email',
             Icons.email,
-          ),
+          ),  // Email input
           buttonWidget.textFieldButton(
             _passwordController,
             'Password',
             Icons.password,
-          ),
-          _buildLoginButton(context),
-          _buildForgotPasswordRow(context),
-          _buildSignUpPrompt(context),
+          ),  // Password input
+          _buildLoginButton(context),  // Login button
+          _buildForgotPasswordRow(context),  // Forget Password section
+          _buildSignUpPrompt(context),  // Sign-up button
         ],
       ),
     );
   }
 
+  // Login title
   Widget _buildTitle() {
     return Text(
       _loginTitle,
-      style: TextStyle(
+      style: const TextStyle(
         color: Colors.white,
         fontSize: 40,
         fontWeight: FontWeight.bold,
@@ -109,13 +100,15 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
+  // Login subtitle
   Widget _buildSubtitle() {
-    return Text(
+    return const Text(
       _loginSubtitle,
       style: TextStyle(color: Colors.grey),
     );
   }
 
+  // Login button
   Widget _buildLoginButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20),
@@ -128,14 +121,18 @@ class LoginScreen extends StatelessWidget {
         child: buttonWidget.textButtonWithcontainer('Login', () {
           final email = _emailController.text;
           final password = _passwordController.text;
-          context
-              .read<AuthBloc>()
-              .add(LoginEvent(email: email, password: password));
+          context.read<AuthBloc>().add(
+            LoginEvent(
+              email: email,
+              password: password,
+            ),
+          );
         }),
       ),
     );
   }
 
+  // Forgot password and reset section
   Widget _buildForgotPasswordRow(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -147,18 +144,18 @@ class LoginScreen extends StatelessWidget {
             style: TextStyle(color: Colors.white, fontSize: 18),
           ),
         ),
-        buttonWidget.textButton('Reset Password', () {}),
+        buttonWidget.textButton('Reset Password', () {
+          // Add reset password logic here
+        }),
       ],
     );
   }
 
+  // Sign-up prompt
   Widget _buildSignUpPrompt(BuildContext context) {
     return TextButton(
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => SignupScreen()),
-        );
+        Navigator.pushNamed(context, '/signup');  // Navigates to signup page
       },
       child: const Text(
         "Don't have an account? Sign Up",
