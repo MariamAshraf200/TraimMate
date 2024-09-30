@@ -27,9 +27,6 @@ Future<void> init() async {
         () => AuthRepositoryImpl(sl()),
   );
 
-  // Data sources
-
-
   // Core
   sl.registerLazySingleton<Networkinfo>(
         () => NetworkInfoImpl(connectionChecker: sl()), // Fetch and pass InternetConnectionChecker instance

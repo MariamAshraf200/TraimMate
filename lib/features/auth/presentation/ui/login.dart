@@ -6,11 +6,9 @@ import '../bloc/auth_state.dart';
 import '../widget/widget.dart';
 
 class LoginPage extends StatelessWidget {
-  // Controllers for text fields
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  // Constants for styling
   static const List<Color> _colors = [
     Color(0xff1c4257),
     Color(0xff253340),
@@ -65,25 +63,27 @@ class LoginPage extends StatelessWidget {
   // Login form layout
   Widget _buildLoginForm(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildTitle(),  // Title (LOGIN)
-          _buildSubtitle(),  // Subtitle (Enter To Your account)
-          buttonWidget.textFieldButton(
-            _emailController,
-            'Email',
-            Icons.email,
-          ),  // Email input
-          buttonWidget.textFieldButton(
-            _passwordController,
-            'Password',
-            Icons.password,
-          ),  // Password input
-          _buildLoginButton(context),  // Login button
-          _buildForgotPasswordRow(context),  // Forget Password section
-          _buildSignUpPrompt(context),  // Sign-up button
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildTitle(),  // Title (LOGIN)
+            _buildSubtitle(),  // Subtitle (Enter To Your account)
+            buttonWidget.textFieldButton(
+              _emailController,
+              'Email',
+              Icons.email,
+            ),  // Email input
+            buttonWidget.textFieldButton(
+              _passwordController,
+              'Password',
+              Icons.password,
+            ),  // Password input
+            _buildLoginButton(context),  // Login button
+            _buildForgotPasswordRow(context),  // Forget Password section
+            _buildSignUpPrompt(context),  // Sign-up button
+          ],
+        ),
       ),
     );
   }
@@ -163,4 +163,5 @@ class LoginPage extends StatelessWidget {
       ),
     );
   }
+
 }

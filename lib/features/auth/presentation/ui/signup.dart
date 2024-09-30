@@ -61,8 +61,8 @@ class SignUpPage extends StatelessWidget {
 
   // Sign-up form layout
   Widget _buildSignUpForm(BuildContext context) {
-    return SingleChildScrollView(
-      child: Center(
+    return Center(
+      child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

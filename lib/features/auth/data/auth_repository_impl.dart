@@ -30,8 +30,6 @@ class AuthRepositoryImpl implements AuthRepository {
 
       await credential.user!.updateDisplayName(name);
 
-      // Optionally, you can also update the user's photo URL if needed:
-      // await credential.user!.updatePhotoURL('https://example.com/photo.jpg');
 
       return User(
         uid: credential.user!.uid,

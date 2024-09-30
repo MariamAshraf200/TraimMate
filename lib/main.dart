@@ -1,12 +1,13 @@
+import 'package:check_weather/features/auth/domain/entity.dart';
+import 'package:check_weather/features/getWeather/presentation/ui/home.dart';
+import 'package:check_weather/features/auth/presentation/ui/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'depency_injection.dart' as di;
 import 'depency_injection.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
-import 'features/auth/presentation/ui/home.dart';
 import 'features/auth/presentation/ui/login.dart';
-import 'features/auth/presentation/ui/signup.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (_) => sl<AuthBloc>(),
         ),
+
       ],
       child: MaterialApp(
         initialRoute: '/login',
