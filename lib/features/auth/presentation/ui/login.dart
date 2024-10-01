@@ -26,8 +26,7 @@ class LoginPage extends StatelessWidget {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
-            // Navigate to Home page upon successful login
-            Navigator.pushReplacementNamed(context, '/home');
+            Navigator.pushReplacementNamed(context, '/location');
           } else if (state is AuthFailure) {
             // Show error message on failure
             ScaffoldMessenger.of(context).showSnackBar(

@@ -3,53 +3,37 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 class GelocatorHelpr {
-  Future<String> determinePosition() async {
+  Future<Position> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
 
+    // Check if location services are enabled
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      return 'Location services are disabled. Please enable them in your device settings.';
+      // If services are disabled, open the location settings
+      await Geolocator.openLocationSettings();
+      throw Exception('Location services are disabled. Please enable them in your device settings.');
     }
 
+    // Check location permission status
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        return 'Location permissions are denied. Please grant location access.';
+        throw Exception('Location permissions are denied. Please grant location access.');
       }
     }
 
+    // If the permission is denied forever
     if (permission == LocationPermission.deniedForever) {
-      return 'Location permissions are permanently denied. You need to enable them from settings.';
+      // Optionally, prompt the user to open app settings
+      await Geolocator.openAppSettings();
+      throw Exception('Location permissions are permanently denied. You need to enable them from settings.');
     }
 
-    // Get the current position of the user.
-    Position position = await Geolocator.getCurrentPosition(
+    // Get the current position of the user
+    return await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
-
-    try {
-      // Reverse geocoding to convert the coordinates to a human-readable address.
-      List<Placemark> placemarks = await placemarkFromCoordinates(
-        position.latitude,
-        position.longitude,
-      );
-
-      // Get the first placemark from the list
-      Placemark place = placemarks[0];
-
-      // Return the formatted address (city and country)
-      return '${place.locality}, ${place.country}';
-    } on PlatformException catch (e) {
-      if (e.code == 'IO_ERROR') {
-        return 'Geocoding service is unavailable. Please try again later.';
-      } else {
-        return 'Failed to get location: ${e.message}';
-      }
-    } catch (e) {
-      print('$e');
-      return 'Failed to get location: $e';
-    }
   }
 }
