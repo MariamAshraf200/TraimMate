@@ -8,7 +8,8 @@ import 'event.dart';
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   final GetWeatherUseCase getWeatherUseCase;
 
-  WeatherBloc(this.getWeatherUseCase) : super(WeatherInitial()) {
+  WeatherBloc( { required  this.getWeatherUseCase}) : super(WeatherInitial()) {
+
     on<GetWeatherEvent>((event, emit) async {
       emit(WeatherLoading());
       try {

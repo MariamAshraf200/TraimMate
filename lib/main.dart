@@ -1,16 +1,13 @@
 import 'package:check_weather/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:check_weather/features/auth/presentation/ui/login.dart';
 import 'package:check_weather/features/auth/presentation/ui/signup.dart';
-import 'package:check_weather/features/getWeather/data/remote_data.dart';
-import 'package:check_weather/features/getWeather/data/repo_impl.dart';
-import 'package:check_weather/features/getWeather/domain/usecase.dart';
 import 'package:check_weather/features/getWeather/presentation/bloc/bloc.dart';
 import 'package:check_weather/features/getWeather/presentation/ui/weather.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'depency_injection.dart' as di;
-import 'depency_injection.dart';
+import 'package:check_weather/core/depency_injection.dart' as di;
+import 'core/depency_injection.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,13 +28,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (_) => sl<AuthBloc>(), // Inject AuthBloc
         ),
-        BlocProvider(
-          create: (_) => WeatherBloc(
-            GetWeatherUseCase(WeatherRepositoryImpl(
-              remoteDataSource: WeatherRemoteDataSource(),
-            )),
-          ),
-        ),
+        BlocProvider(create: (_) => sl<WeatherBloc>())
       ],
       child: MaterialApp(
         initialRoute: '/login',

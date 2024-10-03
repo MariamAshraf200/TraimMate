@@ -1,0 +1,49 @@
+
+### Authentication with Firebase Feature
+
+#### Data Layer
+- **Repository Implementation:**
+  - Implements all functions of the abstract repository class from the domain layer.
+
+  - **Login Function:**
+    - Uses Firebase's `signInWithEmailAndPassword` method.
+    - Accepts `email` and `password` as input.
+    - Returns the authenticated user from Firebase.
+
+  - **Signup Function:**
+    - Uses Firebase's `createUserWithEmailAndPassword` method.
+    - Accepts `name`, `email`, `phone`, and `password` from the user.
+    - Creates a new user in Firebase and returns the user with their information.
+
+  - **Logout Function:**
+    - Uses Firebase's `signOut` method to log the user out.
+
+  - **getCurrentUser Function:**
+    - Retrieves the currently authenticated user from Firebase.
+    - Passes the user information to the `User` entity for further use.
+
+#### Domain Layer
+- **Entity:**
+  - Represents the user data used in the UI, fetched from Firebase.
+
+- **Repository:**
+  - Defines the interface (abstraction) for authentication functions.
+  - Includes methods like `login`, `signup`, `logout`, and `getCurrentUser`.
+
+- **Use Case:**
+  - Business logic related to authentication include LoginUseCase and SignUpUseCase
+
+### Presentation layer
+- **bloc**
+  - bloc
+     handle logic of feature depended on event and state
+  - event
+     user action for feature like 'sign up , login'
+  - state
+      handle state of feature like success , failure , or loading
+
+-ui
+  - display screen that user using widget tree of flutter
+
+- widget
+  - widget used in feature

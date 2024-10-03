@@ -1,0 +1,15 @@
+ --------------<over view of feature>---------
+
+1 => Authentication feature
+
+ user *login* to firebase by email and password
+
+ if didn't have account make one by *signup* enter his data (name , email, phone , password)
+
+ then he enter to home
+
+
+2 => Weather Api Feature
+
+ in home screen just user enter app detect his location by geolocatoer package
+  and determine the weather depended it by api

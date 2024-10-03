@@ -38,7 +38,7 @@ class AuthRepositoryImpl implements AuthRepository {
         phone: phone,
       );
     } catch (e) {
-      return null; // Handle error
+      return null;
     }
   }
 

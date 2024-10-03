@@ -1,0 +1,61 @@
+
+### get whether by api Feature
+Here's a structured documentation for your **Weather Feature** using the Clean Architecture approach:
+
+### Weather Feature
+
+#### Data Layer
+- **Weather Model:**
+  - Represents the weather data model that extends the `Weather` entity.
+  - Converts the API response into a model and then to a domain entity.
+
+  - **DailyWeatherModel:**
+    - Represents daily forecast data.
+
+- **WeatherRemoteDataSource:**
+  - Handles the HTTP request to fetch weather data from the WeatherAPI.
+  - **getWeatherData Function:**
+    - Takes latitude and longitude as parameters.
+    - Makes an HTTP GET request to fetch 7-day weather data using the WeatherAPI.
+    - If successful, returns a parsed JSON response; otherwise, throws an exception.
+
+- **WeatherRepositoryImpl:**
+  - Implements the `WeatherRepository` interface.
+  - **getWeather Function:**
+    - Fetches weather data from the remote data source using latitude and longitude.
+    - Converts the JSON response to a `WeatherModel` and returns it as a `Weather` entity.
+
+#### Domain Layer
+- **Entity:**
+  - `Weather`: Represents the core weather data used in the UI.
+  - `DailyWeather`: Represents daily weather forecasts.
+
+- **Repository Interface (WeatherRepository):**
+  - Defines the contract for fetching weather data.
+  - **getWeather Function:**
+    - Takes latitude and longitude and returns a `Weather` entity.
+
+### Presentation layer
+- **bloc**
+  - bloc
+     handle logic of feature depended on event and state
+  - event
+     user action for feature like 'sign up , login'
+  - state
+      handle state of feature like success , failure , or loading
+
+UI
+ **Current Weather Display**
+   - Shows the current temperature, weather condition, and location.
+   - Weather data is displayed with relevant icons and detailed information.
+
+ **7-Day Weather Forecast**
+   - Each day shows the max and min temperatures, weather condition, and a weather icon.
+   - Users can tap on a day to view detailed information for that specific day.
+
+ **Location-Based Weather**
+   - The app automatically fetches the user’s current location via gelocator package and geoloctor helper file in *core*
+   -retrieves weather data based on those coordinates.
+
+ ** Weather Refresh**
+   - Includes a "Refresh Weather" button to manually fetch the latest weather information.

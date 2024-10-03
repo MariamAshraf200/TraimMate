@@ -7,7 +7,7 @@ import 'model.dart';
 class WeatherRepositoryImpl implements WeatherRepository {
   final WeatherRemoteDataSource remoteDataSource;
 
-  WeatherRepositoryImpl({required this.remoteDataSource});
+  WeatherRepositoryImpl( this.remoteDataSource);
 
   @override
   Future<Weather> getWeather(double latitude, double longitude) async {
