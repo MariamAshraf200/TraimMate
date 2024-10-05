@@ -14,7 +14,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       emit(WeatherLoading());
       try {
         final weather = await getWeatherUseCase.call(event.latitude, event.longitude);
-        emit(WeatherLoaded(weather)); // Emit loaded state with full weather data
+        emit(WeatherLoaded(weather));
       } catch (e) {
         emit(WeatherError(e.toString()));
       }

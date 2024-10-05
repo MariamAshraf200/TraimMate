@@ -1,4 +1,3 @@
-// weather_event.dart
 
 abstract class WeatherEvent {}
 

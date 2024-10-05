@@ -9,7 +9,7 @@ class WeatherInitial extends WeatherState {}
 class WeatherLoading extends WeatherState {}
 
 class WeatherLoaded extends WeatherState {
-  final Weather weather; // This should be your Weather model with all fields
+  final Weather weather;
 
   WeatherLoaded(this.weather);
 }

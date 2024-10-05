@@ -12,6 +12,6 @@ class WeatherRepositoryImpl implements WeatherRepository {
   @override
   Future<Weather> getWeather(double latitude, double longitude) async {
     final weatherData = await remoteDataSource.getWeatherData(latitude, longitude);
-    return WeatherModel.fromJson(weatherData); // Now it includes forecast
+    return WeatherModel.fromJson(weatherData);
   }
 }
