@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:intl/intl.dart'; // for day names
+import 'package:intl/intl.dart';
 import '../../../../core/helper/gelocator_helpr.dart';
 import '../bloc/bloc.dart';
 import '../bloc/event.dart';
 import '../bloc/state.dart';
 
 class WeatherScreen extends StatefulWidget {
-  const WeatherScreen({Key? key}) : super(key: key);
+  const WeatherScreen({super.key});
 
   @override
   _WeatherScreenState createState() => _WeatherScreenState();
@@ -136,7 +136,6 @@ class _WeatherScreenState extends State<WeatherScreen> {
     );
   }
 
-  // Refresh Button
   Widget _buildRefreshButton() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -264,9 +263,15 @@ class _WeatherScreenState extends State<WeatherScreen> {
           }
 
           return const Center(
-            child: Text(
-              'Press the button to fetch weather.',
-              style: TextStyle(color: Colors.white, fontSize: 18),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Waiting for getting Weather info....',
+                  style: TextStyle(color:  Color(0xff2b5c6b), fontSize: 18),
+                ),
+                CircularProgressIndicator(color: Color(0xff2b5c6b) ,),
+              ],
             ),
           );
         },

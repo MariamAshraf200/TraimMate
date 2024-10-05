@@ -1,19 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../domain/auth_repository.dart';
 import '../domain/entity.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final firebase_auth.FirebaseAuth firebaseAuth;
+  
 
   AuthRepositoryImpl(this.firebaseAuth);
 
   @override
   Future<User?> login(String email, String password) async {
+
     try {
       final credential = await firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+
       return User(uid: credential.user!.uid, email: credential.user!.email!);
     } catch (e) {
       return null;
