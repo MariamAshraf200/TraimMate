@@ -18,37 +18,40 @@ class LoginPage extends StatelessWidget {
 
   final ButtonWidget buttonWidget = ButtonWidget();
 
-  LoginPage({super.key});  // Assuming it's defined
+  LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final height = size.height;
+    final width = size.width;
+
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthSuccess) {
             Navigator.pushReplacementNamed(context, '/location');
           } else if (state is AuthFailure) {
-            // Show error message on failure
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
+
+              SnackBar(content: Text(state.message),backgroundColor: Colors.red,),
             );
           }
         },
         child: Stack(
           children: [
-            _buildBackground(), // Background with gradient
-            _buildLoginForm(context),  // Main login form with email, password, and buttons
+            _buildBackground(height, width),
+            _buildLoginForm(context, height, width),
           ],
         ),
       ),
     );
   }
 
-  // Gradient background
-  Widget _buildBackground() {
+  Widget _buildBackground(double height, double width) {
     return Container(
-      height: double.infinity,
-      width: double.infinity,
+      height: height,
+      width: width,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: _colors,
@@ -59,60 +62,64 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  // Login form layout
-  Widget _buildLoginForm(BuildContext context) {
+  Widget _buildLoginForm(BuildContext context, double height, double width) {
     return Center(
       child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildTitle(),  // Title (LOGIN)
-            _buildSubtitle(),  // Subtitle (Enter To Your account)
-            buttonWidget.textFieldButton(
-              _emailController,
-              'Email',
-              Icons.email,
-            ),  // Email input
-            buttonWidget.textFieldButton(
-              _passwordController,
-              'Password',
-              Icons.password,
-            ),  // Password input
-            _buildLoginButton(context),  // Login button
-            _buildForgotPasswordRow(context),  // Forget Password section
-            _buildSignUpPrompt(context),  // Sign-up button
-          ],
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: width * 0.1),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildTitle(width),
+              SizedBox(height: height * 0.02),
+              _buildSubtitle(width),
+              SizedBox(height: height * 0.05),
+              buttonWidget.textFieldButton(
+                _emailController,
+                'Email',
+                Icons.email,
+              ),  // Email input
+              SizedBox(height: height * 0.002),
+              buttonWidget.textFieldButton(
+                _passwordController,
+                'Password',
+                Icons.password,
+              ),  // Password input
+              SizedBox(height: height * 0.02),
+              _buildLoginButton(context, width),
+              SizedBox(height: height * 0.05),
+              _buildForgotPasswordRow(context),
+              _buildSignUpPrompt(context),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  // Login title
-  Widget _buildTitle() {
+  Widget _buildTitle(double width) {
     return Text(
       _loginTitle,
-      style: const TextStyle(
+      style: TextStyle(
         color: Colors.white,
-        fontSize: 40,
+        fontSize: width * 0.1,
         fontWeight: FontWeight.bold,
       ),
     );
   }
 
-  // Login subtitle
-  Widget _buildSubtitle() {
-    return const Text(
+  Widget _buildSubtitle(double width) {
+    return Text(
       _loginSubtitle,
-      style: TextStyle(color: Colors.grey),
+      style: TextStyle(color: Colors.grey, fontSize: width * 0.045),
     );
   }
 
-  // Login button
-  Widget _buildLoginButton(BuildContext context) {
+  Widget _buildLoginButton(BuildContext context, double width) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Container(
-        width: 150,
+        width: width * 0.5,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: Colors.white,
@@ -131,30 +138,30 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  // Forgot password and reset section
   Widget _buildForgotPasswordRow(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            'Forget Your Password?',
-            style: TextStyle(color: Colors.white, fontSize: 18),
+        const Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text(
+              'Forget Password?',
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
           ),
         ),
         buttonWidget.textButton('Reset Password', () {
-          // Add reset password logic here
         }),
       ],
     );
   }
 
-  // Sign-up prompt
+
   Widget _buildSignUpPrompt(BuildContext context) {
     return TextButton(
       onPressed: () {
-        Navigator.pushNamed(context, '/signup');  // Navigates to signup page
+        Navigator.pushNamed(context, '/signup');
       },
       child: const Text(
         "Don't have an account? Sign Up",
@@ -162,5 +169,4 @@ class LoginPage extends StatelessWidget {
       ),
     );
   }
-
 }

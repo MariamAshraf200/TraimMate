@@ -5,6 +5,7 @@ class WeatherRemoteDataSource {
   final String apiKey = '1f377cc88e6c4b55910191125242909';
   final String baseUrl = 'http://api.weatherapi.com/v1/forecast.json';
 
+
   Future<Map<String, dynamic>> getWeatherData(double lat, double lon) async {
     final response = await http.get(
       Uri.parse('$baseUrl?key=$apiKey&q=$lat,$lon&days=7'),

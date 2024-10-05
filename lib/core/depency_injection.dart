@@ -1,3 +1,4 @@
+import 'package:check_weather/features/getWeather/data/remote_data.dart';
 import 'package:check_weather/features/getWeather/data/repo_impl.dart';
 import 'package:check_weather/features/getWeather/domain/repo.dart';
 import 'package:check_weather/features/getWeather/domain/usecase.dart';
@@ -45,6 +46,10 @@ Future<void> init() async {
   // Repo
   sl.registerLazySingleton<WeatherRepository>(
       ()=> WeatherRepositoryImpl(sl())
+  );
+  // remote data source
+  sl.registerLazySingleton<WeatherRemoteDataSource>(
+      ()=> WeatherRemoteDataSource()
   );
 
 
