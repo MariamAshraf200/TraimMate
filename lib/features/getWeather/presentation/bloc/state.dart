@@ -1,4 +1,3 @@
-// state.dart
 
 import '../../domain/entit.dart';
 
@@ -16,6 +15,5 @@ class WeatherLoaded extends WeatherState {
 
 class WeatherError extends WeatherState {
   final String message;
-
   WeatherError(this.message);
 }

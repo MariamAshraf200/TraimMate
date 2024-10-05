@@ -1,4 +1,3 @@
-// weather_bloc.dart
 
 import 'package:check_weather/features/getWeather/presentation/bloc/state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
