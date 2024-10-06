@@ -44,6 +44,7 @@
 
 -ui
   - display screen that user using widget tree of flutter
+  - and use shared preferences package to save data of user
 
 - widget
   - widget used in feature

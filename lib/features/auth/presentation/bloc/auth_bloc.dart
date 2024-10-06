@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
-
 import '../../domain/usecase/login_use_case.dart';
+import '../../domain/usecase/logout_use_case.dart';
 import '../../domain/usecase/sign_up_use_case.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
@@ -11,8 +10,10 @@ import 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoginUseCase loginUseCase;
   final SignUpUseCase signUpUseCase;
+  final LogoutUseCase logoutUseCase;
 
-  AuthBloc({
+  AuthBloc( {
+  required  this.logoutUseCase,
     required this.loginUseCase,
     required this.signUpUseCase,
   }) : super(AuthInitial()) {
@@ -36,6 +37,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
 
-
+on<LogoutEvent>((event,emit) async{
+  emit(AuthLoading());
+  await logoutUseCase;
+  emit(AuthLoggedOut());
+});
   }
 }

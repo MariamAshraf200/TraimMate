@@ -1,5 +1,3 @@
-import 'package:flutter/services.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 
 class GelocatorHelpr {
@@ -31,7 +29,6 @@ class GelocatorHelpr {
       throw Exception('Location permissions are permanently denied. You need to enable them from settings.');
     }
 
-    // Get the current position of the user
     return await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );

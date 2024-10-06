@@ -17,7 +17,9 @@ class AuthRepositoryImpl implements AuthRepository {
         email: email,
         password: password,
       );
-
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('email', email);
+      await prefs.setString('password', password);
       return User(uid: credential.user!.uid, email: credential.user!.email!);
     } catch (e) {
       return null;
@@ -49,6 +51,9 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> logout() async {
     await firebaseAuth.signOut();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('email');
+    await prefs.remove('password');
   }
 
   @override

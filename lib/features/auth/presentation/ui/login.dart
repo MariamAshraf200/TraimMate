@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
 import '../widget/widget.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  LoginPage({super.key});
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -18,7 +26,29 @@ class LoginPage extends StatelessWidget {
 
   final ButtonWidget buttonWidget = ButtonWidget();
 
-  LoginPage({super.key});
+  @override
+  void initState() {
+    super.initState();
+    _checkSavedCredentials();
+  }
+
+  Future<void> _checkSavedCredentials() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? savedEmail = prefs.getString('email');
+    String? savedPassword = prefs.getString('password');
+
+    if (savedEmail != null && savedPassword != null) {
+      _emailController.text = savedEmail;
+      _passwordController.text = savedPassword;
+
+      context.read<AuthBloc>().add(
+        LoginEvent(
+          email: savedEmail,
+          password: savedPassword,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +63,10 @@ class LoginPage extends StatelessWidget {
             Navigator.pushReplacementNamed(context, '/location');
           } else if (state is AuthFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
-
-              SnackBar(content: Text(state.message),backgroundColor: Colors.red,),
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Colors.red,
+              ),
             );
           }
         },
@@ -156,7 +188,6 @@ class LoginPage extends StatelessWidget {
       ],
     );
   }
-
 
   Widget _buildSignUpPrompt(BuildContext context) {
     return TextButton(
