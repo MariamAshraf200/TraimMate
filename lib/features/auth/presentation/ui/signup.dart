@@ -3,15 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
 import '../bloc/auth_state.dart';
-import '../widget/widget.dart';  // Assuming this is where ButtonWidget is defined
+import '../widget/widget.dart';
 
 class SignUpPage extends StatelessWidget {
-  // Controllers for the text fields
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-  // Constants for design
   static const List<Color> _colors = [
     Color(0xff1c4257),
     Color(0xff253340),
@@ -19,10 +17,14 @@ class SignUpPage extends StatelessWidget {
   static const String _signUpTitle = 'SIGN UP';
   static const String _signUpSubtitle = 'Create your account';
 
-  final ButtonWidget buttonWidget = ButtonWidget();  // Assuming it's defined
+  final ButtonWidget buttonWidget = ButtonWidget();
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final height = size.height;
+    final width = size.width;
+
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
@@ -30,25 +32,24 @@ class SignUpPage extends StatelessWidget {
             Navigator.pushReplacementNamed(context, '/home');
           } else if (state is AuthFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
+              SnackBar(content: Text(state.message), backgroundColor: Colors.red),
             );
           }
         },
         child: Stack(
           children: [
-            _buildBackground(),  // Background gradient
-            _buildSignUpForm(context),  // Main form layout
+            _buildBackground(height, width),
+            _buildSignUpForm(context, height, width),
           ],
         ),
       ),
     );
   }
 
-  // Background gradient
-  Widget _buildBackground() {
+  Widget _buildBackground(double height, double width) {
     return Container(
-      height: double.infinity,
-      width: double.infinity,
+      height: height,
+      width: width,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: _colors,
@@ -59,71 +60,80 @@ class SignUpPage extends StatelessWidget {
     );
   }
 
-  // Sign-up form layout
-  Widget _buildSignUpForm(BuildContext context) {
-    return SingleChildScrollView(
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _buildTitle(),  // Title (SIGN UP)
-            _buildSubtitle(),  // Subtitle (Create your account)
-
-            buttonWidget.textFieldButton(
-              _nameController,
-              'Name',
-              Icons.person,
-            ),
-            buttonWidget.textFieldButton(
-              _emailController,
-              'Email',
-              Icons.email,
-            ),  // Email input
-
-            buttonWidget.textFieldButton(
-            _phoneController,
-              'Phone',
-              Icons.phone,
-            ),  // Email in
-            buttonWidget.textFieldButton(
-              _passwordController,
-              'Password',
-              Icons.password,
-            ),
-            _buildSignUpButton(context),  // Sign-up button
-            _buildLoginPrompt(context),  // Already have an account prompt
-          ],
+  Widget _buildSignUpForm(BuildContext context, double height, double width) {
+    return Center(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: width * 0.1),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _buildTitle(width),
+              SizedBox(height: height * 0.02),
+              _buildSubtitle(width),
+              SizedBox(height: height * 0.05),
+              buttonWidget.textFieldButton(
+                _nameController,
+                'Name',
+                Icons.person,
+              ),  // Name input
+              SizedBox(height: height * 0.001),
+              buttonWidget.textFieldButton(
+                _emailController,
+                'Email',
+                Icons.email,
+              ),  // Email input
+              SizedBox(height: height * 0.001),
+              buttonWidget.textFieldButton(
+                _phoneController,
+                'Phone',
+                Icons.phone,
+              ),  // Phone input
+              SizedBox(height: height * 0.001),
+              buttonWidget.textFieldButton(
+                _passwordController,
+                'Password',
+                Icons.password,
+              ),  // Password input
+              SizedBox(height: height * 0.05),
+              _buildSignUpButton(context, width),
+              SizedBox(height: height * 0.02),
+              _buildLoginPrompt(context),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  // Sign-up title
-  Widget _buildTitle() {
-    return const Text(
+  // Sign-up title with responsive font size
+  Widget _buildTitle(double width) {
+    return Text(
       _signUpTitle,
       style: TextStyle(
         color: Colors.white,
-        fontSize: 40,
+        fontSize: width * 0.1,
         fontWeight: FontWeight.bold,
       ),
     );
   }
 
-  // Sign-up subtitle
-  Widget _buildSubtitle() {
-    return const Text(
+  // Sign-up subtitle with responsive font size
+  Widget _buildSubtitle(double width) {
+    return Text(
       _signUpSubtitle,
-      style: TextStyle(color: Colors.grey),
+      style: TextStyle(
+        color: Colors.grey,
+        fontSize: width * 0.045,
+      ),
     );
   }
 
-  // Sign-up button
-  Widget _buildSignUpButton(BuildContext context) {
+  Widget _buildSignUpButton(BuildContext context, double width) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Container(
-        width: 150,
+        width: width * 0.5,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: Colors.white,
@@ -131,21 +141,20 @@ class SignUpPage extends StatelessWidget {
         child: buttonWidget.textButtonWithcontainer('Sign Up', () {
           final email = _emailController.text;
           final password = _passwordController.text;
-          final phone =_phoneController.text;
+          final phone = _phoneController.text;
           final name = _nameController.text;
           context.read<AuthBloc>().add(
-            SignUpEvent(email: email, password: password, name:name,phone: phone ),
+            SignUpEvent(email: email, password: password, name: name, phone: phone),
           );
         }),
       ),
     );
   }
 
-  // Already have an account? Login prompt
   Widget _buildLoginPrompt(BuildContext context) {
     return TextButton(
       onPressed: () {
-        Navigator.pop(context);  // Navigate back to login page
+        Navigator.pop(context);
       },
       child: const Text(
         'Already have an account? Login',

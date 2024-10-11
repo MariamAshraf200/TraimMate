@@ -43,7 +43,7 @@ class ButtonWidget {
           onPressed:()=> fun(),
           child: Text(title,
               style: const TextStyle(
-                color: Color(0xff1c4257),
+                color: Colors.grey,
                 fontSize: 20,
               ))),
     );

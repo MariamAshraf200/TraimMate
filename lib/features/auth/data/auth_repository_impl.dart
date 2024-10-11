@@ -1,19 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../domain/auth_repository.dart';
 import '../domain/entity.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final firebase_auth.FirebaseAuth firebaseAuth;
+  
 
   AuthRepositoryImpl(this.firebaseAuth);
 
   @override
   Future<User?> login(String email, String password) async {
+
     try {
       final credential = await firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('email', email);
+      await prefs.setString('password', password);
       return User(uid: credential.user!.uid, email: credential.user!.email!);
     } catch (e) {
       return null;
@@ -30,8 +36,6 @@ class AuthRepositoryImpl implements AuthRepository {
 
       await credential.user!.updateDisplayName(name);
 
-      // Optionally, you can also update the user's photo URL if needed:
-      // await credential.user!.updatePhotoURL('https://example.com/photo.jpg');
 
       return User(
         uid: credential.user!.uid,
@@ -40,13 +44,16 @@ class AuthRepositoryImpl implements AuthRepository {
         phone: phone,
       );
     } catch (e) {
-      return null; // Handle error
+      return null;
     }
   }
 
   @override
   Future<void> logout() async {
     await firebaseAuth.signOut();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('email');
+    await prefs.remove('password');
   }
 
   @override

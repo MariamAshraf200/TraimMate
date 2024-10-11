@@ -14,3 +14,8 @@ class OfflineFailure extends Failure {
 class WrongDataFailure extends Failure {
   WrongDataFailure({super.message});
 }
+class LocationFailure extends Failure{
+  final String message;
+
+  LocationFailure(this.message);
+}
