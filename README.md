@@ -19,3 +19,4 @@ https://github.com/user-attachments/assets/17ba8242-782b-457a-be9d-28ead299a09d
 
 Ai Model And Finish Project
 
+https://github.com/user-attachments/assets/8aa7d366-cba9-4763-b4b3-834e36c2a699
