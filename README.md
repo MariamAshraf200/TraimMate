@@ -16,3 +16,6 @@ Upload api weather feature  video
 Get weather depended location
 
 https://github.com/user-attachments/assets/17ba8242-782b-457a-be9d-28ead299a09d
+
+Ai Model And Finish Project
+
